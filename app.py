@@ -6,19 +6,15 @@ import keras
 import os
 from metrics import top_2_accuracy,top_3_accuracy
 
-# Create a Flask app instance
 app = Flask(__name__)
 
-# Define a route for the home page
 @app.route('/')
 def index():
     return render_template('index.html')
 
-# Define a route for image upload
 @app.route('/upload', methods=['POST'])
 def upload_image():
-    # print("Hi")
-    # Get the uploaded file from the request object
+    
     file = request.files['image']
     if not file:
         return 'No file uploaded.'
@@ -41,24 +37,19 @@ def upload_image():
     #result2 = loaded_model2.predict(test_image2)
     
 
-    class_idx1 = np.argmax(result1, axis=1)[0]  # get the index of the predicted class
+    class_idx1 = np.argmax(result1, axis=1)[0]  
     #class_idx2 = np.argmax(result2, axis=1)[0]
 #   print(class_idx)
-    class_labels = ['akiec',  'bcc', 'bkl', 'df', 'mel', 'nv', 'vasc']  # define your class labels
+    class_labels = ['akiec',  'bcc', 'bkl', 'df', 'mel', 'nv', 'vasc'] 
     class_label1 = class_labels[class_idx1]
     #class_label2 = class_labels[class_idx2]
     print(result1,sep="\n")
     
     print('Predicted class according to Mobilenet CNN:', class_label1)
     #print('Predicted class according to CNN:', class_label2)
-
-   
-    # Load the saved model
     
-    
-    # Render the prediction result using a template
     return render_template('result.html', tumor_type1=class_label1)
 
-# Run the Flask app
+
 if __name__ == '__main__':
     app.run()
